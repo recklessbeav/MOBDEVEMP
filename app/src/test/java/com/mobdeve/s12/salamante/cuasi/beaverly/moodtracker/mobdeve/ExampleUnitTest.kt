@@ -1,4 +1,4 @@
-package com.mobdeve.s12.cuasi.beaverly.mobdevemp
+package com.mobdeve.s12.salamante.cuasi.beaverly.moodtracker.mobdeve
 
 import org.junit.Test
 
