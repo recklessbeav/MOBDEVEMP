@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".WeekActivity">
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/row_week"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:stretchColumns="*">
+        <TableRow>
+            <Button
+                android:id="@+id/btn_monday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#DCB43D"
+                android:text="Monday"/>
+        </TableRow>
+        <TableRow>
+            <Button
+                android:id="@+id/btn_tuesday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#DCB43D"
+                android:text="Tuesday"/>
+        </TableRow>
+        <TableRow>
+            <Button
+                android:id="@+id/btn_wednesday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#DCB43D"
+                android:text="Wednesday"/>
+        </TableRow>
+        <TableRow>
+            <Button
+                android:id="@+id/btn_thursday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#DCB43D"
+                android:text="Thursday"/>
+        </TableRow>
+        <TableRow>
+            <Button
+                android:id="@+id/btn_friday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#DCB43D"
+                android:text="Friday"/>
+        </TableRow>
+        <TableRow>
+            <Button
+                android:id="@+id/btn_saturday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#DCB43D"
+                android:text="Saturday"/>
+        </TableRow>
+        <TableRow>
+            <Button
+                android:id="@+id/btn_sunday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#DCB43D"
+                android:text="Sunday"/>
+        </TableRow>
+    </TableLayout>
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="(Insert Date)"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/row_week"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_week"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your Week In A Glance"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_date"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
