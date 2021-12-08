@@ -14,7 +14,6 @@ class LogActivity : AppCompatActivity() {
         binding = ActivityLogBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
 
-
         var mood = intent.getStringExtra("mood")
 
         binding!!.etLog.hint = "Why do you feel $mood?"
@@ -24,10 +23,5 @@ class LogActivity : AppCompatActivity() {
             startActivity(gotoWeekActivity)
             finish()
         }
-
-
-
-
-
     }
 }

@@ -19,16 +19,19 @@ class MainActivity : AppCompatActivity() {
         binding!!.ivSad.setOnClickListener {
             gotoLogActivity.putExtra("mood", binding!!.tvFeelingSad.text.toString())
             startActivity(gotoLogActivity)
+            finish()
         }
 
         binding!!.ivHappy.setOnClickListener {
             gotoLogActivity.putExtra("mood", binding!!.tvFeelingHappy.text.toString())
             startActivity(gotoLogActivity)
+            finish()
         }
 
         binding!!.ivNeutral.setOnClickListener {
             gotoLogActivity.putExtra("mood", binding!!.tvFeelingNeutral.text.toString())
             startActivity(gotoLogActivity)
+            finish()
         }
 
         binding!!.btnLoggedAlready.setOnClickListener {
