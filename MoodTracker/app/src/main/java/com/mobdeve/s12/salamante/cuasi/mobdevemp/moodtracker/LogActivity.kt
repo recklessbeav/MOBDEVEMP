@@ -23,5 +23,10 @@ class LogActivity : AppCompatActivity() {
             startActivity(gotoWeekActivity)
             finish()
         }
+
+        binding!!.btnMap.setOnClickListener {
+            val gotoMapsActivity = Intent(applicationContext, MapsActivity::class.java)
+            startActivity(gotoMapsActivity)
+        }
     }
 }

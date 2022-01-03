@@ -14,6 +14,7 @@
         android:hint="Reason"
         android:layout_margin="10dp"
         android:padding="10dp"
+        android:translationY="-40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -28,9 +29,24 @@
         android:gravity="center"
         android:layout_margin="10dp"
         android:padding="10dp"
+        android:translationY="-40dp"
         app:layout_constraintBottom_toTopOf="@+id/et_log"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
+
+    <Button
+        android:id="@+id/btn_map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:backgroundTint="#DCB43D"
+        android:text="Add Location"
+        android:gravity="center"
+        android:translationY="-40dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_log"/>
 
     <Button
         android:id="@+id/btn_reason_proceed"
@@ -40,6 +56,7 @@
         android:padding="10dp"
         android:backgroundTint="#DCB43D"
         android:text="Proceed"
-        app:layout_constraintTop_toBottomOf="@+id/et_log"/>
+        android:translationY="-40dp"
+        app:layout_constraintTop_toBottomOf="@+id/btn_map"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
