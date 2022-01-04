@@ -16,10 +16,11 @@ class LogActivity : AppCompatActivity() {
 
         var mood = intent.getStringExtra("mood")
 
-        binding!!.etLog.hint = "Why do you feel $mood?"
+        binding!!.etLog.hint = "Why do you feel " + mood!!.lowercase() + "?"
 
         binding!!.btnReasonProceed.setOnClickListener {
             val gotoWeekActivity = Intent(applicationContext, WeekActivity::class.java)
+            gotoWeekActivity.putExtra("mood", mood)
             startActivity(gotoWeekActivity)
             finish()
         }
