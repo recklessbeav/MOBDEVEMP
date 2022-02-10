@@ -1,26 +1,26 @@
 package com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker
 
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.databinding.ActivityLogBinding
+import android.widget.Toast
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.databinding.ActivityWeekBinding
+import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.util.SharedPrefUtility
 import java.text.SimpleDateFormat
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.temporal.ChronoField
 import java.util.*
 
 class WeekActivity : AppCompatActivity() {
 
+    private lateinit var sharedPref: SharedPrefUtility
     var binding: ActivityWeekBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initPrefs()
         binding = ActivityWeekBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
+
+        // Toast.makeText(applicationContext, sharedPref.getString("reason"), Toast.LENGTH_SHORT).show()
 
         var mood = intent.getStringExtra("mood")
 
@@ -141,6 +141,10 @@ class WeekActivity : AppCompatActivity() {
             gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
             startActivity(gotoDayActivity)
         }
+    }
+
+    fun initPrefs() {
+        sharedPref = SharedPrefUtility(this)
     }
 
     private fun moodCheck (mood : String?): Int {
