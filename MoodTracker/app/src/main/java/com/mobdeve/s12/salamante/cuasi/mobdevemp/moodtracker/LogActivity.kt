@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.widget.Toast
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -33,9 +34,15 @@ class LogActivity : AppCompatActivity(), LocationListener{
     protected var gps_enabled: Boolean? = true
     protected var network_enabled: Boolean? = true
 
-
+    private lateinit var geocoder: Geocoder
     private lateinit var sharedPref: SharedPrefUtility
     var binding: ActivityLogBinding? = null
+
+   // val geocoder = Geocoder()
+
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,10 +66,7 @@ class LogActivity : AppCompatActivity(), LocationListener{
             }
         }
 
-        binding!!.btnMap.setOnClickListener {
-            val gotoMapsActivity = Intent(applicationContext, MapsActivity::class.java)
-            startActivity(gotoMapsActivity)
-        }
+
 
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         if (ActivityCompat.checkSelfPermission(
@@ -91,10 +95,18 @@ class LogActivity : AppCompatActivity(), LocationListener{
 
     fun initPrefs() {
         sharedPref = SharedPrefUtility(this)
+        geocoder = Geocoder(this)
     }
 
+
+
     override fun onLocationChanged(location: Location) {
-        binding!!.tvLoc.text = "Latitude:" + location.latitude + " \n Longitude:" + location.longitude
+
+        var addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+     //  binding!!.tvLoc.text = "Latitude:" + location.latitude + " \n Longitude:" + location.longitude +
+
+    //    val addresses = geocoder!!.getFromLocation(location.latitude, location.longitude, 1)
+        binding!!.tvLoc.setText(addresses[0].getAddressLine(0))
     }
 
     override fun onProviderDisabled(provider: String) {

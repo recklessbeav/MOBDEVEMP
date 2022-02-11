@@ -66,4 +66,8 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
         sharedPref.saveString("app_closed", currentDate.toString())
     }
+
+
+
+
 }

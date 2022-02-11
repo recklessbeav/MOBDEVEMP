@@ -48,20 +48,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_log"/>
 
-    <Button
-        android:id="@+id/btn_map"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:backgroundTint="#DCB43D"
-        android:text="Add Location"
-        android:gravity="center"
-        android:translationY="-40dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_reason_proceed"
-        />
 
     <Button
         android:id="@+id/btn_reason_proceed"
