@@ -3,6 +3,7 @@ package com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.databinding.ActivityLogBinding
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.util.SharedPrefUtility
 
@@ -22,11 +23,15 @@ class LogActivity : AppCompatActivity() {
         binding!!.etLog.hint = "Why do you feel " + mood!!.lowercase() + "?"
 
         binding!!.btnReasonProceed.setOnClickListener {
-            sharedPref.saveString("reason", binding!!.etLog.text.toString())
-            val gotoWeekActivity = Intent(applicationContext, WeekActivity::class.java)
-            gotoWeekActivity.putExtra("mood", mood)
-            startActivity(gotoWeekActivity)
-            finish()
+            if (binding!!.etLog.text.toString() == "") {
+                Toast.makeText(applicationContext, "Add a reason!", Toast.LENGTH_LONG).show()
+            } else {
+                sharedPref.saveString("reason", binding!!.etLog.text.toString())
+                val gotoWeekActivity = Intent(applicationContext, WeekActivity::class.java)
+                gotoWeekActivity.putExtra("mood", mood)
+                startActivity(gotoWeekActivity)
+                finish()
+            }
         }
 
         binding!!.btnMap.setOnClickListener {
