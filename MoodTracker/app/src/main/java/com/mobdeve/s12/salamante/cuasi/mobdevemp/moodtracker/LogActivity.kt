@@ -94,7 +94,7 @@ class LogActivity : AppCompatActivity(), LocationListener{
     }
 
     override fun onLocationChanged(location: Location) {
-        binding!!.tvLoc.text = "Latitude:" + location.latitude + ", Longitude:" + location.longitude
+        binding!!.tvLoc.text = "Latitude:" + location.latitude + " \n Longitude:" + location.longitude
     }
 
     override fun onProviderDisabled(provider: String) {
