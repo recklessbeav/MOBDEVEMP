@@ -4,10 +4,17 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/activity_day.xml" value="0.20989583333333334" />
+<<<<<<< Updated upstream
         <entry key="app/src/main/res/layout/activity_log.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_maps.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_week.xml" value="0.1417877746882423" />
+=======
+        <entry key="app/src/main/res/layout/activity_log.xml" value="0.15643997327210438" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_maps.xml" value="0.10778985507246377" />
+        <entry key="app/src/main/res/layout/activity_week.xml" value="0.2331657093756604" />
+>>>>>>> Stashed changes
         <entry key="app/src/main/res/layout/custom_info_contents.xml" value="0.20989583333333334" />
         <entry key="app/src/main/res/menu/current_place_menu.xml" value="0.20989583333333334" />
       </map>
