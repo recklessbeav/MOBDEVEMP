@@ -6,9 +6,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-<<<<<<< Updated upstream
 import android.widget.Toast
-=======
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
@@ -17,9 +15,7 @@ import android.location.LocationManager
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
->>>>>>> Stashed changes
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.databinding.ActivityLogBinding
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.util.SharedPrefUtility
 
@@ -34,8 +30,8 @@ class LogActivity : AppCompatActivity(), LocationListener{
     var lat: String? = ""
     protected var latitude: String? = ""
     protected var longitude: String? = ""
-    protected var gps_enabled: Boolean? = false
-    protected var network_enabled: Boolean? = false
+    protected var gps_enabled: Boolean? = true
+    protected var network_enabled: Boolean? = true
 
 
     private lateinit var sharedPref: SharedPrefUtility
@@ -93,11 +89,10 @@ class LogActivity : AppCompatActivity(), LocationListener{
 
     }
 
-<<<<<<< Updated upstream
     fun initPrefs() {
         sharedPref = SharedPrefUtility(this)
     }
-=======
+
     override fun onLocationChanged(location: Location) {
         binding!!.tvLoc.text = "Latitude:" + location.latitude + ", Longitude:" + location.longitude
     }
@@ -114,6 +109,4 @@ class LogActivity : AppCompatActivity(), LocationListener{
         Log.d("Latitude", "status")
     }
 
-
->>>>>>> Stashed changes
 }
