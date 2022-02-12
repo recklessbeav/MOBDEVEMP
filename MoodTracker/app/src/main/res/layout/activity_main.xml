@@ -80,15 +80,15 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
-    <Button
-        android:id="@+id/btn_logged_already"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:backgroundTint="#DCB43D"
-        android:text="Already logged your mood?"
-        app:layout_constraintTop_toBottomOf="@+id/row_feelings"/>
+<!--    <Button-->
+<!--        android:id="@+id/btn_logged_already"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="10dp"-->
+<!--        android:padding="10dp"-->
+<!--        android:backgroundTint="#DCB43D"-->
+<!--        android:text="Already logged your mood?"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/row_feelings"/>-->
 
 
 

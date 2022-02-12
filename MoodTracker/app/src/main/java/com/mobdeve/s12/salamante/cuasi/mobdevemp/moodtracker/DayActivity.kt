@@ -30,6 +30,7 @@ class DayActivity : AppCompatActivity() {
 
         binding!!.tvDayDate.text = date
         binding!!.tvDayContent.text = sharedPref.getString("reason")
+        binding!!.tvDayLocation.text = sharedPref.getString("location")
     }
 
     fun initPrefs() {

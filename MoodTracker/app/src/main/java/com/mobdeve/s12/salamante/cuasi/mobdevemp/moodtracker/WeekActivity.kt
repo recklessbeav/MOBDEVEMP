@@ -20,7 +20,11 @@ class WeekActivity : AppCompatActivity() {
         binding = ActivityWeekBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
 
-        // Toast.makeText(applicationContext, sharedPref.getString("reason"), Toast.LENGTH_SHORT).show()
+        // flag that all needed input are gathered
+        sharedPref.saveInt("saved_data", 1)
+
+        Toast.makeText(applicationContext, sharedPref.getString("app_loaded"), Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, sharedPref.getString("app_closed"), Toast.LENGTH_SHORT).show()
 
         var mood = intent.getStringExtra("mood")
 

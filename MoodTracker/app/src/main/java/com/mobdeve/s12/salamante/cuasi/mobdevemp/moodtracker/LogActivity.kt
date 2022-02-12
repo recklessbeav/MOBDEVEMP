@@ -1,8 +1,6 @@
 package com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker
 
 import android.Manifest
-import android.R
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,18 +12,19 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.util.Log
-import android.view.View
-import android.widget.TextView
 import androidx.core.app.ActivityCompat
+import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.dao.NoteDAO
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.databinding.ActivityLogBinding
+import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.model.Note
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.util.SharedPrefUtility
+import java.text.SimpleDateFormat
+import java.util.*
 
 class LogActivity : AppCompatActivity(), LocationListener{
 
     protected var locationManager: LocationManager? = null
     protected var locationListener: LocationListener? = null
     protected var context: Context? = null
-
 
     var provider: String? = ""
     var lat: String? = ""
@@ -37,12 +36,7 @@ class LogActivity : AppCompatActivity(), LocationListener{
     private lateinit var geocoder: Geocoder
     private lateinit var sharedPref: SharedPrefUtility
     var binding: ActivityLogBinding? = null
-
-   // val geocoder = Geocoder()
-
-
-
-
+    lateinit var noteDAO: NoteDAO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +45,10 @@ class LogActivity : AppCompatActivity(), LocationListener{
         setContentView(binding!!.root)
 
         var mood = intent.getStringExtra("mood")
+        val sdf = SimpleDateFormat("ddMyyyy")
+        val currentDate = sdf.format(Date()).toInt()
+
+        Toast.makeText(applicationContext, currentDate, Toast.LENGTH_LONG).show()
 
         binding!!.etLog.hint = "Why do you feel " + mood!!.lowercase() + "?"
 
@@ -59,14 +57,23 @@ class LogActivity : AppCompatActivity(), LocationListener{
                 Toast.makeText(applicationContext, "Add a reason!", Toast.LENGTH_LONG).show()
             } else {
                 sharedPref.saveString("reason", binding!!.etLog.text.toString())
+                sharedPref.saveString("location", binding!!.tvLoc.text.toString())
+
+                // add db code here
+//                var note = Note(sharedPref!!.getString("mood"),
+//                    sharedPref!!.getString("reason"),
+//                    sharedPref!!.getString("location"),
+//                    sharedPref!!.getString("date"),
+//                    currentDate)
+//
+//                noteDAO.addNote(note)
+
                 val gotoWeekActivity = Intent(applicationContext, WeekActivity::class.java)
                 gotoWeekActivity.putExtra("mood", mood)
                 startActivity(gotoWeekActivity)
                 finish()
             }
         }
-
-
 
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         if (ActivityCompat.checkSelfPermission(
@@ -79,18 +86,14 @@ class LogActivity : AppCompatActivity(), LocationListener{
         ) {
             locationManager!!.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, this)
         } else{
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)){
                 Toast.makeText(applicationContext, "Wrong Password",
                     Toast.LENGTH_SHORT).show()
-            }else{
+            } else{
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 100)
             }
         }
-//        locationManager!!.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, this)
-
-
-
     }
 
     fun initPrefs() {
@@ -98,14 +101,8 @@ class LogActivity : AppCompatActivity(), LocationListener{
         geocoder = Geocoder(this)
     }
 
-
-
     override fun onLocationChanged(location: Location) {
-
         var addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-     //  binding!!.tvLoc.text = "Latitude:" + location.latitude + " \n Longitude:" + location.longitude +
-
-    //    val addresses = geocoder!!.getFromLocation(location.latitude, location.longitude, 1)
         binding!!.tvLoc.setText(addresses[0].getAddressLine(0))
     }
 

@@ -45,12 +45,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(gotoLogActivity)
             finish()
         }
-
-        binding!!.btnLoggedAlready.setOnClickListener {
-            val gotoWeekActivity = Intent(applicationContext, WeekActivity::class.java)
-            startActivity(gotoWeekActivity)
-            finish()
-        }
     }
 
     fun initPrefs() {
@@ -59,15 +53,27 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
         sharedPref.saveString("app_loaded", currentDate.toString())
+
+        // erase sharedprefs content when new day has elapsed
+        var opened = sharedPref.getString("app_loaded")
+        var closed = sharedPref.getString("app_closed")
+
+        if (opened != closed && closed != "") {
+            sharedPref.removeAllPreferences()
+        }
+
+        // check if user already added all needed datas
+        if (sharedPref.getInt("saved_data") == 1) {
+            val gotoWeekActivity = Intent(applicationContext, WeekActivity::class.java)
+            startActivity(gotoWeekActivity)
+            finish()
+        }
     }
 
     override fun onPause() {
         super.onPause()
         sharedPref.saveString("app_closed", currentDate.toString())
     }
-
-
-
-
 }
