@@ -20,6 +20,12 @@ import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.model.Note
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.util.SharedPrefUtility
 import java.text.SimpleDateFormat
 import java.util.*
+import android.location.Address
+
+import java.util.Locale
+
+
+
 
 class LogActivity : AppCompatActivity(), LocationListener{
 
@@ -107,7 +113,7 @@ class LogActivity : AppCompatActivity(), LocationListener{
     }
 
     override fun onLocationChanged(location: Location) {
-        var addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+       var addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
         binding!!.tvLoc.setText(addresses[0].getAddressLine(0))
     }
 
