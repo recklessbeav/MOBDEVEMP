@@ -94,6 +94,7 @@
         android:layout_height="wrap_content"
         android:text="Your Week In A Glance"
         android:textStyle="bold"
+        android:textSize="20dp"
         android:gravity="center"
         android:layout_margin="10dp"
         android:padding="10dp"
