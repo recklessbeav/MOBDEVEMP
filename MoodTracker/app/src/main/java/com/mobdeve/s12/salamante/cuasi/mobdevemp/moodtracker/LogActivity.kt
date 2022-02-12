@@ -14,6 +14,7 @@ import android.location.LocationManager
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.dao.NoteDAO
+import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.dao.NoteDAODatabase
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.databinding.ActivityLogBinding
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.model.Note
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.util.SharedPrefUtility
@@ -38,17 +39,20 @@ class LogActivity : AppCompatActivity(), LocationListener{
     var binding: ActivityLogBinding? = null
     lateinit var noteDAO: NoteDAO
 
+    val sdf = SimpleDateFormat("MMM d yyyy")
+    val currentDate = sdf.format(Date())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initPrefs()
+        noteDAO = NoteDAODatabase(applicationContext)
         binding = ActivityLogBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
 
         var mood = intent.getStringExtra("mood")
-        val sdf = SimpleDateFormat("ddMyyyy")
-        val currentDate = sdf.format(Date()).toInt()
 
-        Toast.makeText(applicationContext, currentDate, Toast.LENGTH_LONG).show()
+        val sdf_id = SimpleDateFormat("ddMyyyy")
+        val id_date = sdf_id.format(Date()).toInt()
 
         binding!!.etLog.hint = "Why do you feel " + mood!!.lowercase() + "?"
 
@@ -58,15 +62,16 @@ class LogActivity : AppCompatActivity(), LocationListener{
             } else {
                 sharedPref.saveString("reason", binding!!.etLog.text.toString())
                 sharedPref.saveString("location", binding!!.tvLoc.text.toString())
+                sharedPref.saveString("date", currentDate.toString())
 
                 // add db code here
-//                var note = Note(sharedPref!!.getString("mood"),
-//                    sharedPref!!.getString("reason"),
-//                    sharedPref!!.getString("location"),
-//                    sharedPref!!.getString("date"),
-//                    currentDate)
-//
-//                noteDAO.addNote(note)
+                var note = Note(sharedPref!!.getString("mood"),
+                    sharedPref!!.getString("reason"),
+                    sharedPref!!.getString("location"),
+                    sharedPref!!.getString("date"),
+                    id_date)
+
+                noteDAO.addNote(note)
 
                 val gotoWeekActivity = Intent(applicationContext, WeekActivity::class.java)
                 gotoWeekActivity.putExtra("mood", mood)

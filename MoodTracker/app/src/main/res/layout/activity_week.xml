@@ -20,6 +20,14 @@
         android:stretchColumns="*">
         <TableRow>
             <Button
+                android:id="@+id/btn_sunday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#DCB43D"
+                android:text="Sunday"/>
+        </TableRow>
+        <TableRow>
+            <Button
                 android:id="@+id/btn_monday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -65,14 +73,6 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="#DCB43D"
                 android:text="Saturday"/>
-        </TableRow>
-        <TableRow>
-            <Button
-                android:id="@+id/btn_sunday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#DCB43D"
-                android:text="Sunday"/>
         </TableRow>
     </TableLayout>
 

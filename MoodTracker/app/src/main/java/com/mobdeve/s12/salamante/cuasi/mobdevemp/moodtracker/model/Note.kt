@@ -9,8 +9,8 @@ class Note(
 ){
     constructor() : this("", "", "", "", -1)
 
-    constructor(mood: String, reason: String, date: String,  id: Int)
-            : this(mood, reason, "", date, id)
+//    constructor(mood: String, reason: String, date: String,  id: Int)
+//            : this(mood, reason, "", date, id)
 
 //    constructor(id: Int, fullName:String, password:String)
 //            : this("", "", password, fullName, id)

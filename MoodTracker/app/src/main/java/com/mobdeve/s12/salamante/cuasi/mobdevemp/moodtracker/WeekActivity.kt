@@ -3,8 +3,12 @@ package com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
+import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.dao.NoteDAO
+import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.dao.NoteDAODatabase
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.databinding.ActivityWeekBinding
+import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.model.Note
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.util.SharedPrefUtility
 import java.text.SimpleDateFormat
 import java.util.*
@@ -12,143 +16,203 @@ import java.util.*
 class WeekActivity : AppCompatActivity() {
 
     private lateinit var sharedPref: SharedPrefUtility
+    lateinit var noteDAO: NoteDAO
+    var noteList: ArrayList<Note?> = ArrayList<Note?>()
     var binding: ActivityWeekBinding? = null
+
+    val sdf = SimpleDateFormat("MMM d yyyy")
+    val sdfButton = SimpleDateFormat("MMMM d")
+    val sdfDay = SimpleDateFormat("EEEE")
+    val weekNumber = Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila")).get(Calendar.WEEK_OF_YEAR)
+    val cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila"))
+    val calWeekEnd = Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initPrefs()
+        noteDAO = NoteDAODatabase(applicationContext)
         binding = ActivityWeekBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
 
         // flag that all needed input are gathered
         sharedPref.saveInt("saved_data", 1)
 
-        Toast.makeText(applicationContext, sharedPref.getString("app_loaded"), Toast.LENGTH_SHORT).show()
-        Toast.makeText(applicationContext, sharedPref.getString("app_closed"), Toast.LENGTH_SHORT).show()
+        // get notes db
+        noteList = noteDAO.getNotes()!!
+
+//        for (note in noteList) {
+//            Toast.makeText(applicationContext, note!!.mood.toString(), Toast.LENGTH_LONG).show()
+//        }
+
+//        for (note in noteList) {
+//            Toast.makeText(applicationContext, note!!.date.toString(), Toast.LENGTH_SHORT).show()
+//        }
 
         var mood = intent.getStringExtra("mood")
 
-        val sdf = SimpleDateFormat("MMM d yyyy")
-        val sdfButton = SimpleDateFormat("MMMM d")
-        val weekNumber = Calendar.getInstance(TimeZone.getTimeZone("UTC")).get(Calendar.WEEK_OF_YEAR)
-
-        val cal = Calendar.getInstance()
         cal[Calendar.WEEK_OF_YEAR] = weekNumber
         cal[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
 
-        val calWeekEnd = Calendar.getInstance()
         calWeekEnd[Calendar.WEEK_OF_YEAR] = weekNumber
         calWeekEnd[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
         calWeekEnd.add(Calendar.DATE, 6)
 
+        cal.add(Calendar.DATE, -1)
+        calWeekEnd.add(Calendar.DATE, -1)
         binding!!.tvDate.text = "(" + sdf.format(cal.time).toString() + " — " + sdf.format(calWeekEnd.time).toString() + ")"
 
+        binding!!.btnSunday.text = "Sunday (" + sdfButton.format(cal.time).toString() + ")"
+        mood = getMoodString(noteList)
+        binding!!.btnSunday.setBackgroundColor(moodCheck(mood))
+        binding!!.btnSunday.setOnClickListener {
+            cal[Calendar.WEEK_OF_YEAR] = weekNumber
+            cal[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
+            cal.add(Calendar.DATE, -1)
+
+            if (noteValidator(sdf.format(cal.time).toString())) {
+                val gotoDayActivity = Intent(applicationContext, DayActivity::class.java)
+                gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
+                gotoDayActivity.putExtra("day", sdfDay.format(cal.time).toString())
+                startActivity(gotoDayActivity)
+            } else {
+                Toast.makeText(applicationContext, "No log for this day has been found.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        cal.add(Calendar.DATE, 1)
         binding!!.btnMonday.text = "Monday (" + sdfButton.format(cal.time).toString() + ")"
-        // need to fix; use mood color stored in databse
+        mood = getMoodString(noteList)
         binding!!.btnMonday.setBackgroundColor(moodCheck(mood))
         binding!!.btnMonday.setOnClickListener {
-            val gotoDayActivity = Intent(applicationContext, DayActivity::class.java)
-
             cal[Calendar.WEEK_OF_YEAR] = weekNumber
             cal[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
 
-            gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
-            startActivity(gotoDayActivity)
+            if (noteValidator(sdf.format(cal.time).toString())) {
+                val gotoDayActivity = Intent(applicationContext, DayActivity::class.java)
+                gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
+                startActivity(gotoDayActivity)
+            } else {
+                Toast.makeText(applicationContext, "No log for this day has been found.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         cal.add(Calendar.DATE, 1)
         binding!!.btnTuesday.text = "Tuesday (" + sdfButton.format(cal.time).toString() + ")"
-        // need to fix; use mood color stored in databse
+        mood = getMoodString(noteList)
         binding!!.btnTuesday.setBackgroundColor(moodCheck(mood))
         binding!!.btnTuesday.setOnClickListener {
-            val gotoDayActivity = Intent(applicationContext, DayActivity::class.java)
-
             cal[Calendar.WEEK_OF_YEAR] = weekNumber
             cal[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
             cal.add(Calendar.DATE, 1)
 
-            gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
-            startActivity(gotoDayActivity)
+            if (noteValidator(sdf.format(cal.time).toString())) {
+                val gotoDayActivity = Intent(applicationContext, DayActivity::class.java)
+                gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
+                startActivity(gotoDayActivity)
+            } else {
+                Toast.makeText(applicationContext, "No log for this day has been found.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         cal.add(Calendar.DATE, 1)
         binding!!.btnWednesday.text = "Wednesday (" + sdfButton.format(cal.time).toString() + ")"
-        // need to fix; use mood color stored in databse
+        mood = getMoodString(noteList)
         binding!!.btnWednesday.setBackgroundColor(moodCheck(mood))
         binding!!.btnWednesday.setOnClickListener {
-            val gotoDayActivity = Intent(applicationContext, DayActivity::class.java)
-
             cal[Calendar.WEEK_OF_YEAR] = weekNumber
             cal[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
             cal.add(Calendar.DATE, 2)
 
-            gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
-            startActivity(gotoDayActivity)
+            if (noteValidator(sdf.format(cal.time).toString())) {
+                val gotoDayActivity = Intent(applicationContext, DayActivity::class.java)
+                gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
+                startActivity(gotoDayActivity)
+            } else {
+                Toast.makeText(applicationContext, "No log for this day has been found.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         cal.add(Calendar.DATE, 1)
         binding!!.btnThursday.text = "Thursday (" + sdfButton.format(cal.time).toString() + ")"
-        // need to fix; use mood color stored in databse
+        mood = getMoodString(noteList)
         binding!!.btnThursday.setBackgroundColor(moodCheck(mood))
         binding!!.btnThursday.setOnClickListener {
-            val gotoDayActivity = Intent(applicationContext, DayActivity::class.java)
-
             cal[Calendar.WEEK_OF_YEAR] = weekNumber
             cal[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
             cal.add(Calendar.DATE, 3)
 
-            gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
-            startActivity(gotoDayActivity)
+            if (noteValidator(sdf.format(cal.time).toString())) {
+                val gotoDayActivity = Intent(applicationContext, DayActivity::class.java)
+                gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
+                startActivity(gotoDayActivity)
+            } else {
+                Toast.makeText(applicationContext, "No log for this day has been found.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         cal.add(Calendar.DATE, 1)
         binding!!.btnFriday.text = "Friday (" + sdfButton.format(cal.time).toString() + ")"
-        // need to fix; use mood color stored in databse
+        mood = getMoodString(noteList)
         binding!!.btnFriday.setBackgroundColor(moodCheck(mood))
         binding!!.btnFriday.setOnClickListener {
-            val gotoDayActivity = Intent(applicationContext, DayActivity::class.java)
-
             cal[Calendar.WEEK_OF_YEAR] = weekNumber
             cal[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
             cal.add(Calendar.DATE, 4)
 
-            gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
-            startActivity(gotoDayActivity)
+            if (noteValidator(sdf.format(cal.time).toString())) {
+                val gotoDayActivity = Intent(applicationContext, DayActivity::class.java)
+                gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
+                gotoDayActivity.putExtra("day", sdfDay.format(cal.time).toString())
+                startActivity(gotoDayActivity)
+            } else {
+                Toast.makeText(applicationContext, "No log for this day has been found.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         cal.add(Calendar.DATE, 1)
         binding!!.btnSaturday.text = "Saturday (" + sdfButton.format(cal.time).toString() + ")"
-        // need to fix; use mood color stored in databse
+        mood = getMoodString(noteList)
         binding!!.btnSaturday.setBackgroundColor(moodCheck(mood))
         binding!!.btnSaturday.setOnClickListener {
-            val gotoDayActivity = Intent(applicationContext, DayActivity::class.java)
-
             cal[Calendar.WEEK_OF_YEAR] = weekNumber
             cal[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
             cal.add(Calendar.DATE, 5)
 
-            gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
-            startActivity(gotoDayActivity)
-        }
-
-        cal.add(Calendar.DATE, 1)
-        binding!!.btnSunday.text = "Sunday (" + sdfButton.format(cal.time).toString() + ")"
-        // need to fix; use mood color stored in databse
-        binding!!.btnSunday.setBackgroundColor(moodCheck(mood))
-        binding!!.btnSunday.setOnClickListener {
-            val gotoDayActivity = Intent(applicationContext, DayActivity::class.java)
-
-            cal[Calendar.WEEK_OF_YEAR] = weekNumber
-            cal[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
-            cal.add(Calendar.DATE, 6)
-
-            gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
-            startActivity(gotoDayActivity)
+            if (noteValidator(sdf.format(cal.time).toString())) {
+                val gotoDayActivity = Intent(applicationContext, DayActivity::class.java)
+                gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
+                gotoDayActivity.putExtra("day", sdfDay.format(cal.time).toString())
+                startActivity(gotoDayActivity)
+            } else {
+                Toast.makeText(applicationContext, "No log for this day has been found.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     fun initPrefs() {
         sharedPref = SharedPrefUtility(this)
+    }
+
+    fun noteValidator (currentDate: String) : Boolean {
+        for (note in noteList) {
+            if (note!!.date.toString() == currentDate) {
+                return true
+            }
+        }
+        return false
+    }
+
+    fun getMoodString (noteList: ArrayList<Note?>): String {
+        lateinit var mood: String
+        for (note in noteList) {
+            if (note!!.date.toString() == sdf.format(cal.time).toString()) {
+                mood = note.mood.toString()
+                break
+            } else {
+                mood = "extra"
+            }
+        }
+        return mood
     }
 
     private fun moodCheck (mood : String?): Int {

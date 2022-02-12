@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
 
-        sharedPref.saveString("date", currentDate.toString())
         val gotoLogActivity = Intent(applicationContext, LogActivity::class.java)
 
         binding!!.ivSad.setOnClickListener {

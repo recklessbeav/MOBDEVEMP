@@ -68,6 +68,8 @@ class NoteDAODatabase : NoteDAO {
             temp.id = cursor!!.getInt(0)
             temp.mood = cursor!!.getString(1)
             temp.reason = cursor!!.getString(2)
+            temp.location = cursor!!.getString(3)
+            temp.date = cursor!!.getString(4)
             result.add(temp)
             cursor!!.moveToNext()
         }
