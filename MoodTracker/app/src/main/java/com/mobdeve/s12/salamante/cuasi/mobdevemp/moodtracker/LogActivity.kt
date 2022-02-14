@@ -24,9 +24,6 @@ import android.location.Address
 
 import java.util.Locale
 
-
-
-
 class LogActivity : AppCompatActivity(), LocationListener{
 
     protected var locationManager: LocationManager? = null
@@ -80,7 +77,7 @@ class LogActivity : AppCompatActivity(), LocationListener{
                 noteDAO.addNote(note)
 
                 val gotoWeekActivity = Intent(applicationContext, WeekActivity::class.java)
-                gotoWeekActivity.putExtra("mood", mood)
+//                gotoWeekActivity.putExtra("mood", mood)
                 startActivity(gotoWeekActivity)
                 finish()
             }

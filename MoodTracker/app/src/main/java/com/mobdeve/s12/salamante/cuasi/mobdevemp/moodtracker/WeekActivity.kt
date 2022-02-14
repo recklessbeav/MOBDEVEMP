@@ -23,9 +23,9 @@ class WeekActivity : AppCompatActivity() {
     val sdf = SimpleDateFormat("MMM d yyyy")
     val sdfButton = SimpleDateFormat("MMMM d")
     val sdfDay = SimpleDateFormat("EEEE")
-    val weekNumber = Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila")).get(Calendar.WEEK_OF_YEAR)
-    val cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila"))
-    val calWeekEnd = Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila"))
+    var weekNumber = Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila")).get(Calendar.WEEK_OF_YEAR)
+    var cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila"))
+    var calWeekEnd = Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,25 +40,33 @@ class WeekActivity : AppCompatActivity() {
         // get notes db
         noteList = noteDAO.getNotes()!!
 
-//        for (note in noteList) {
-//            Toast.makeText(applicationContext, note!!.mood.toString(), Toast.LENGTH_LONG).show()
-//        }
+        var mood = ""
 
-//        for (note in noteList) {
-//            Toast.makeText(applicationContext, note!!.date.toString(), Toast.LENGTH_SHORT).show()
-//        }
+        if (sharedPref.getInt("change_date") == 1) {
+            sharedPref.saveInt("change_date", 0)
+            var changedCal = intent.getSerializableExtra("change_date") as Calendar
 
-        var mood = intent.getStringExtra("mood")
+            cal[Calendar.WEEK_OF_YEAR] = changedCal[Calendar.WEEK_OF_YEAR]
+            cal[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
 
-        cal[Calendar.WEEK_OF_YEAR] = weekNumber
-        cal[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
+            calWeekEnd[Calendar.WEEK_OF_YEAR] = changedCal[Calendar.WEEK_OF_YEAR]
+            calWeekEnd[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
+            calWeekEnd.add(Calendar.DATE, 6)
 
-        calWeekEnd[Calendar.WEEK_OF_YEAR] = weekNumber
-        calWeekEnd[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
-        calWeekEnd.add(Calendar.DATE, 6)
+            cal.add(Calendar.DATE, -1)
+            calWeekEnd.add(Calendar.DATE, -1)
+        } else {
+            cal[Calendar.WEEK_OF_YEAR] = weekNumber
+            cal[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
 
-        cal.add(Calendar.DATE, -1)
-        calWeekEnd.add(Calendar.DATE, -1)
+            calWeekEnd[Calendar.WEEK_OF_YEAR] = weekNumber
+            calWeekEnd[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
+            calWeekEnd.add(Calendar.DATE, 6)
+
+            cal.add(Calendar.DATE, -1)
+            calWeekEnd.add(Calendar.DATE, -1)
+        }
+
         binding!!.tvDate.text = "(" + sdf.format(cal.time).toString() + " — " + sdf.format(calWeekEnd.time).toString() + ")"
 
         binding!!.btnSunday.text = "Sunday (" + sdfButton.format(cal.time).toString() + ")"
@@ -186,6 +194,14 @@ class WeekActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(applicationContext, "No log for this day has been found.", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        binding!!.btnDate.setOnClickListener {
+            val gotoChangeDateActivity = Intent(applicationContext, ChangeDateActivity::class.java)
+            gotoChangeDateActivity.putExtra("date", sdf.format(cal.time).toString())
+            gotoChangeDateActivity.putExtra("day", sdfDay.format(cal.time).toString())
+            startActivity(gotoChangeDateActivity)
+            finish()
         }
     }
 
