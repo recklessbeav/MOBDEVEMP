@@ -22,8 +22,7 @@ class WeekActivity : AppCompatActivity() {
     val sdf = SimpleDateFormat("MMM d yyyy")
     val sdfButton = SimpleDateFormat("MMMM d")
     val sdfDay = SimpleDateFormat("EEEE")
-    var weekNumber =
-        Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila")).get(Calendar.WEEK_OF_YEAR)
+    var weekNumber : Int = 0
     var cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila"))
     var calWeekEnd = Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila"))
 
@@ -46,16 +45,20 @@ class WeekActivity : AppCompatActivity() {
             sharedPref.saveInt("change_date", 0)
             var changedCal = intent.getSerializableExtra("change_date") as Calendar
 
-            cal[Calendar.WEEK_OF_YEAR] = changedCal[Calendar.WEEK_OF_YEAR]
+            weekNumber = changedCal[Calendar.WEEK_OF_YEAR]
+
+            cal[Calendar.WEEK_OF_YEAR] = weekNumber
             cal[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
 
-            calWeekEnd[Calendar.WEEK_OF_YEAR] = changedCal[Calendar.WEEK_OF_YEAR]
+            calWeekEnd[Calendar.WEEK_OF_YEAR] = weekNumber
             calWeekEnd[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
             calWeekEnd.add(Calendar.DATE, 6)
 
             cal.add(Calendar.DATE, -1)
             calWeekEnd.add(Calendar.DATE, -1)
         } else {
+            weekNumber = Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila")).get(Calendar.WEEK_OF_YEAR)
+
             cal[Calendar.WEEK_OF_YEAR] = weekNumber
             cal[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
 
@@ -104,6 +107,7 @@ class WeekActivity : AppCompatActivity() {
             if (noteValidator(sdf.format(cal.time).toString())) {
                 val gotoDayActivity = Intent(applicationContext, DayActivity::class.java)
                 gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
+                gotoDayActivity.putExtra("day", sdfDay.format(cal.time).toString())
                 startActivity(gotoDayActivity)
             } else {
                 Toast.makeText(
@@ -126,6 +130,7 @@ class WeekActivity : AppCompatActivity() {
             if (noteValidator(sdf.format(cal.time).toString())) {
                 val gotoDayActivity = Intent(applicationContext, DayActivity::class.java)
                 gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
+                gotoDayActivity.putExtra("day", sdfDay.format(cal.time).toString())
                 startActivity(gotoDayActivity)
             } else {
                 Toast.makeText(
@@ -148,6 +153,7 @@ class WeekActivity : AppCompatActivity() {
             if (noteValidator(sdf.format(cal.time).toString())) {
                 val gotoDayActivity = Intent(applicationContext, DayActivity::class.java)
                 gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
+                gotoDayActivity.putExtra("day", sdfDay.format(cal.time).toString())
                 startActivity(gotoDayActivity)
             } else {
                 Toast.makeText(
@@ -170,6 +176,7 @@ class WeekActivity : AppCompatActivity() {
             if (noteValidator(sdf.format(cal.time).toString())) {
                 val gotoDayActivity = Intent(applicationContext, DayActivity::class.java)
                 gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
+                gotoDayActivity.putExtra("day", sdfDay.format(cal.time).toString())
                 startActivity(gotoDayActivity)
             } else {
                 Toast.makeText(
