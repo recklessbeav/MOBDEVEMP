@@ -3,7 +3,6 @@ package com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.dao.NoteDAO
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.dao.NoteDAODatabase
@@ -23,7 +22,8 @@ class WeekActivity : AppCompatActivity() {
     val sdf = SimpleDateFormat("MMM d yyyy")
     val sdfButton = SimpleDateFormat("MMMM d")
     val sdfDay = SimpleDateFormat("EEEE")
-    var weekNumber = Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila")).get(Calendar.WEEK_OF_YEAR)
+    var weekNumber =
+        Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila")).get(Calendar.WEEK_OF_YEAR)
     var cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila"))
     var calWeekEnd = Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila"))
 
@@ -67,7 +67,9 @@ class WeekActivity : AppCompatActivity() {
             calWeekEnd.add(Calendar.DATE, -1)
         }
 
-        binding!!.tvDate.text = "(" + sdf.format(cal.time).toString() + " — " + sdf.format(calWeekEnd.time).toString() + ")"
+        binding!!.tvDate.text =
+            "(" + sdf.format(cal.time).toString() + " — " + sdf.format(calWeekEnd.time)
+                .toString() + ")"
 
         binding!!.btnSunday.text = "Sunday (" + sdfButton.format(cal.time).toString() + ")"
         mood = getMoodString(noteList, cal)
@@ -83,7 +85,11 @@ class WeekActivity : AppCompatActivity() {
                 gotoDayActivity.putExtra("day", sdfDay.format(cal.time).toString())
                 startActivity(gotoDayActivity)
             } else {
-                Toast.makeText(applicationContext, "No log for this day has been found.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    "No log for this day has been found.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -100,7 +106,11 @@ class WeekActivity : AppCompatActivity() {
                 gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
                 startActivity(gotoDayActivity)
             } else {
-                Toast.makeText(applicationContext, "No log for this day has been found.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    "No log for this day has been found.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -118,7 +128,11 @@ class WeekActivity : AppCompatActivity() {
                 gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
                 startActivity(gotoDayActivity)
             } else {
-                Toast.makeText(applicationContext, "No log for this day has been found.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    "No log for this day has been found.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -136,7 +150,11 @@ class WeekActivity : AppCompatActivity() {
                 gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
                 startActivity(gotoDayActivity)
             } else {
-                Toast.makeText(applicationContext, "No log for this day has been found.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    "No log for this day has been found.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -154,7 +172,11 @@ class WeekActivity : AppCompatActivity() {
                 gotoDayActivity.putExtra("date", sdf.format(cal.time).toString())
                 startActivity(gotoDayActivity)
             } else {
-                Toast.makeText(applicationContext, "No log for this day has been found.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    "No log for this day has been found.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -173,7 +195,11 @@ class WeekActivity : AppCompatActivity() {
                 gotoDayActivity.putExtra("day", sdfDay.format(cal.time).toString())
                 startActivity(gotoDayActivity)
             } else {
-                Toast.makeText(applicationContext, "No log for this day has been found.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    "No log for this day has been found.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -192,7 +218,11 @@ class WeekActivity : AppCompatActivity() {
                 gotoDayActivity.putExtra("day", sdfDay.format(cal.time).toString())
                 startActivity(gotoDayActivity)
             } else {
-                Toast.makeText(applicationContext, "No log for this day has been found.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    "No log for this day has been found.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -209,7 +239,7 @@ class WeekActivity : AppCompatActivity() {
         sharedPref = SharedPrefUtility(this)
     }
 
-    fun noteValidator (currentDate: String) : Boolean {
+    fun noteValidator(currentDate: String): Boolean {
         for (note in noteList) {
             if (note!!.date.toString() == currentDate) {
                 return true
@@ -218,7 +248,7 @@ class WeekActivity : AppCompatActivity() {
         return false
     }
 
-    fun getMoodString (noteList: ArrayList<Note?>, cal: Calendar): String {
+    fun getMoodString(noteList: ArrayList<Note?>, cal: Calendar): String {
         lateinit var mood: String
         for (note in noteList) {
             if (note!!.date.toString() == sdf.format(cal.time).toString()) {
@@ -231,7 +261,7 @@ class WeekActivity : AppCompatActivity() {
         return mood
     }
 
-    private fun moodCheck (mood : String?): Int {
+    private fun moodCheck(mood: String?): Int {
         // Sad          #CD8383
         // Neutral      #CDC683
         // Happy        #AFCD83
@@ -244,7 +274,6 @@ class WeekActivity : AppCompatActivity() {
         } else {
             return getResources().getColor(R.color.teal_700)
         }
-//    Neutral, Happy
     }
 }
 

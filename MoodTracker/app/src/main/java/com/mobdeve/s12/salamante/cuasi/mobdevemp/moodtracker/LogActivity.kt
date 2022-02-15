@@ -1,17 +1,17 @@
 package com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker
 
 import android.Manifest
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.widget.Toast
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.dao.NoteDAO
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.dao.NoteDAODatabase
@@ -20,11 +20,8 @@ import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.model.Note
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.util.SharedPrefUtility
 import java.text.SimpleDateFormat
 import java.util.*
-import android.location.Address
 
-import java.util.Locale
-
-class LogActivity : AppCompatActivity(), LocationListener{
+class LogActivity : AppCompatActivity(), LocationListener {
 
     protected var locationManager: LocationManager? = null
     protected var locationListener: LocationListener? = null
@@ -68,16 +65,17 @@ class LogActivity : AppCompatActivity(), LocationListener{
                 sharedPref.saveString("date", currentDate.toString())
 
                 // add db code here
-                var note = Note(sharedPref!!.getString("mood"),
+                var note = Note(
+                    sharedPref!!.getString("mood"),
                     sharedPref!!.getString("reason"),
                     sharedPref!!.getString("location"),
                     sharedPref!!.getString("date"),
-                    id_date)
+                    id_date
+                )
 
                 noteDAO.addNote(note)
 
                 val gotoWeekActivity = Intent(applicationContext, WeekActivity::class.java)
-//                gotoWeekActivity.putExtra("mood", mood)
                 startActivity(gotoWeekActivity)
                 finish()
             }
@@ -86,20 +84,37 @@ class LogActivity : AppCompatActivity(), LocationListener{
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         if (ActivityCompat.checkSelfPermission(
                 this,
-                Manifest.permission.ACCESS_FINE_LOCATION )
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
             == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             locationManager!!.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, this)
-        } else{
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)){
-                Toast.makeText(applicationContext, "Wrong Password",
-                    Toast.LENGTH_SHORT).show()
-            } else{
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 100)
+        } else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+                || ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            ) {
+                Toast.makeText(
+                    applicationContext, "Wrong Password",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ),
+                    100
+                )
             }
         }
     }
@@ -110,7 +125,7 @@ class LogActivity : AppCompatActivity(), LocationListener{
     }
 
     override fun onLocationChanged(location: Location) {
-       var addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+        var addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
         binding!!.tvLoc.setText(addresses[0].getAddressLine(0))
     }
 

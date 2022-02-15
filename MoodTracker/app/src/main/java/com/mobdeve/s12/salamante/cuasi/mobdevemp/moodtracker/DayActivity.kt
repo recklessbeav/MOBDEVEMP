@@ -2,13 +2,11 @@ package com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.dao.NoteDAO
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.dao.NoteDAODatabase
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.databinding.ActivityDayBinding
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.model.Note
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.util.SharedPrefUtility
-import java.text.SimpleDateFormat
 import java.util.ArrayList
 
 class DayActivity : AppCompatActivity() {
@@ -32,7 +30,7 @@ class DayActivity : AppCompatActivity() {
         var day = intent.getStringExtra("day")
         binding!!.tvDayDay.text = day
 
-            for (note in noteList) {
+        for (note in noteList) {
             if (note!!.date.toString() == date) {
                 setMood(note.mood.toString())
                 binding!!.tvDayDate.text = note.date.toString()
