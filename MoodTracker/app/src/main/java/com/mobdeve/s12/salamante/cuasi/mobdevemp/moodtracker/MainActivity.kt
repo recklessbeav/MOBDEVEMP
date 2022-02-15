@@ -3,7 +3,10 @@ package com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.dao.NoteDAO
+import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.dao.NoteDAODatabase
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.databinding.ActivityMainBinding
+import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.model.Note
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.util.SharedPrefUtility
 import java.text.SimpleDateFormat
 import java.util.*
@@ -11,17 +14,22 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var sharedPref: SharedPrefUtility
+    lateinit var noteDAO: NoteDAO
+    var noteList: ArrayList<Note?> = ArrayList<Note?>()
     var binding: ActivityMainBinding? = null
 
     val sdf = SimpleDateFormat("dd/M/yyyy")
+    val sdfDatabase = SimpleDateFormat("MMM d yyyy")
     val currentDate = sdf.format(Date())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initPrefs()
+        noteDAO = NoteDAODatabase(applicationContext)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
 
+        noteList = noteDAO.getNotes()!!
         val gotoLogActivity = Intent(applicationContext, LogActivity::class.java)
 
         binding!!.ivSad.setOnClickListener {
@@ -64,10 +72,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         // check if user already added all needed datas
-        if (sharedPref.getInt("saved_data") == 1) {
-            val gotoWeekActivity = Intent(applicationContext, WeekActivity::class.java)
-            startActivity(gotoWeekActivity)
-            finish()
+        for (note in noteList) {
+            if (note!!.date.toString() == sdfDatabase.format(Date())) {
+                val gotoWeekActivity = Intent(applicationContext, WeekActivity::class.java)
+                startActivity(gotoWeekActivity)
+                finish()
+                break
+            }
         }
     }
 
