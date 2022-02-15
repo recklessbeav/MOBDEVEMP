@@ -2,12 +2,10 @@ package com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.databinding.ActivityChangeDateBinding
 import com.mobdeve.s12.salamante.cuasi.mobdevemp.moodtracker.util.SharedPrefUtility
-
 
 class ChangeDateActivity : AppCompatActivity() {
     var binding: ActivityChangeDateBinding? = null
@@ -28,7 +26,6 @@ class ChangeDateActivity : AppCompatActivity() {
             val year: Int = binding!!.dpDate.year
             val calendar: Calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila"))
             calendar.set(year, month, day)
-//            Toast.makeText(applicationContext,calendar.toString(),Toast.LENGTH_SHORT).show()
 
             val gotoWeekActivity = Intent(applicationContext, WeekActivity::class.java)
             gotoWeekActivity.putExtra("change_date", calendar)
